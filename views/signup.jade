@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+    head
+        title= "Signup"
+    body
+        #container
+            h1 Signup
+            form(action="/signup", method="post")
+                label Email
+                input(type="text", name="username")
+                label Password
+                input(type="password", name="password")
+                button(type="submit") Signup
+
+            a(href="/login") Login

@@ -4,3 +4,9 @@ html(lang="en")
         title= "Forum Application"
     body
         h1 Forum Application
+        if (!user)
+            a(href="/login") Login
+            a(href="/signup") Signup
+        else
+            p You are currently logged in as #{user.username}
+            a(href="/logout") Logout
