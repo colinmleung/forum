@@ -1,6 +1,8 @@
 // config/database.js
-module.exports = {
-
-    'url' : 'mongodb://localhost' // looks like mongodb://<user>:<pass>@mongo.onmodulus.net:27017/Mikha4ot
-
+module.exports = function(Sequelize) {
+	var db = new Sequelize('forum', 'postgres', '1qaz2wsx3edc', {
+		dialect: 'postgres',
+		host: 'localhost'
+	});
+	return db;
 };
