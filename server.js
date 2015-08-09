@@ -1,7 +1,3 @@
-// server.js
-
-// set up ======================================================================
-// get all the tools we need
 var express  = require('express');
 var app      = express();
 var port     = process.env.PORT || 8080;
@@ -15,35 +11,30 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-// configuration ===============================================================
-
 var db = require('./config/database')(Sequelize);
-var user = require('./app/models/user')(db, Sequelize);
-require('./config/passport')(passport, user); // pass passport for configuration
+var User = require('./app/models/user')(db, Sequelize);
+var Thread = require('./app/models/thread')(db, Sequelize);
+var Post = require('./app/models/post')(db, Sequelize, User, Thread);
+require('./config/passport')(passport, User);
 
-// set up our express application
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser.urlencoded({ // get information from html forms
+app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(bodyParser.json()); // get information from json
+app.use(bodyParser.json());
 
-app.set('view engine', 'ejs'); // set up ejs for templating
+app.set('view engine', 'ejs');
 
-// required for passport
 app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch',
+    secret: 'secret',
     resave: false,
     saveUninitialized: false
-})); // session secret
+}));
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(passport.session());
+app.use(flash());
 
-// routes ======================================================================
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./app/routes.js')(app, passport, db, User, Thread, Post);
 
-// launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);

@@ -1,0 +1,33 @@
+<!-- views/thread.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Forum</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Posts</h1>
+
+    <% for (var i = 0; i < posts.length; i++) { %>
+        <p><%= posts[i].body %></p>
+    <% } %>
+
+    <% if (isLoggedIn) { %>
+        <form action="/thread" method="post">
+            <div class="form-group">
+                <label>Body</label>
+                <input type="text" class="form-control" name="body">
+                <input type="hidden" name="id" value="<%= id %>" />
+            </div>
+
+            <button type="submit" class="btn btn-warning btn-lg">Add Post</button>
+        </form>
+    <% } %>
+</div>
+</body>
+</html>
